@@ -1,4 +1,4 @@
-# Space Invaders — College Project (Basic Edition with Custom Sprites)
+# Space Invaders 
 
 A 2D arcade Space Invaders game developed in Python using the built-in **Tkinter** graphical user interface library and **custom transparent spaceship sprites**. This edition is designed specifically as a college project submission: simple, modular, strictly **5 Python files**, and completely free of external dependencies beyond Pillow for image loading.
 
@@ -10,8 +10,6 @@ A 2D arcade Space Invaders game developed in Python using the built-in **Tkinter
 - **Language**: Python 3.x
 - **GUI Framework**: Tkinter (`tkinter.Canvas`)
 - **Graphics**: Custom transparent PNG spaceship sprites rendered with `ImageTk.PhotoImage`
-- **Architecture**: Modular Object-Oriented Programming (OOP)
-- **Total Code Files**: Exactly 5 Python source files
 
 ---
 
