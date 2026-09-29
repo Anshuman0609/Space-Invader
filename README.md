@@ -15,22 +15,8 @@ A 2D arcade Space Invaders game developed in Python using the built-in **Tkinter
 
 ---
 
-## 2. File Structure (Max 5 Python Files)
 
-```
-basic_version/
-├── settings.py   # 1. Screen dimensions, speeds, asset paths, points, and constants
-├── player.py     # 2. Player spaceship sprite class (Movement, bounds check, respawn)
-├── bullet.py     # 3. Laser projectile class (Upward player & downward alien shots)
-├── alien.py      # 4. Alien sprite class & 8x5 AlienGrid fleet formation manager
-├── main.py       # 5. Game controller, 60 FPS loop, collision detection, Tk window
-├── assets/       # Folder containing the 20 transparent spaceship PNG sprites
-└── README.md     # Project documentation & viva defense guide
-```
-
----
-
-## 3. How to Run
+## 2. How to Run
 
 Open your terminal or command prompt, navigate to the `basic_version` directory, and run:
 
@@ -41,7 +27,7 @@ python main.py
 
 ---
 
-## 4. Controls
+## 3. Controls
 
 | Key | Action |
 |:---:|:---|
@@ -53,7 +39,7 @@ python main.py
 
 ---
 
-## 5. Scoring & Alien Ranks
+## 4. Scoring & Alien Ranks
 
 The invasion fleet consists of 40 aliens arranged in an **8-column × 5-row** formation:
 
@@ -66,37 +52,3 @@ The invasion fleet consists of 40 aliens arranged in an **8-column × 5-row** fo
 | **Row 4 (Front)** | `spider_red.png` | Spider Mech | **10 PTS** | Front-line mechanized swarm |
 
 ---
-
-## 6. Technical Implementation Details (Viva / Presentation Guide)
-
-### A. Rendering Image Sprites on Tkinter Canvas
-Images with transparency are opened and resized with Pillow's `Image.Resampling.LANCZOS`, then converted to `ImageTk.PhotoImage`:
-```python
-pil_img = Image.open(path).convert("RGBA").resize((width, height), Image.Resampling.LANCZOS)
-self.image = ImageTk.PhotoImage(pil_img)
-self.shape_id = self.canvas.create_image(x, y, image=self.image, anchor="center")
-```
-*Key Viva Note*: A reference to the `PhotoImage` must be preserved in Python (e.g. `self.image`) to prevent Python's garbage collector from deleting the image from memory, which would cause canvas flickering.
-
-### B. Non-Blocking Game Loop (`canvas.after`)
-Arcade games require a continuous frame loop (~60 frames per second). In Tkinter, calling `time.sleep()` would freeze the GUI event loop. Instead, we use Tkinter's non-blocking timer:
-```python
-self.canvas.after(16, self._game_loop)
-```
-- `16 ms` delay corresponds to $\frac{1000 \text{ ms}}{60 \text{ FPS}} \approx 16.6 \text{ ms}$ per frame.
-
-### C. Axis-Aligned Bounding Box (AABB) Collision Detection
-Collisions are evaluated mathematically using AABB overlap:
-```python
-def check_overlap(box_a, box_b):
-    return (box_a[0] < box_b[2] and   # a.left   < b.right
-            box_a[2] > box_b[0] and   # a.right  > b.left
-            box_a[1] < box_b[3] and   # a.top    < b.bottom
-            box_a[3] > box_b[1])      # a.bottom > b.top
-```
-
-### D. Alien Fleet Formation AI
-1. **Synchronized March**: The fleet moves together horizontally (`dx = speed * direction`).
-2. **Edge Reversal & Step Down**: When any alien touches the left or right margin, the fleet reverses direction and drops down 20 pixels.
-3. **Dynamic Acceleration**: As aliens are shot down, the fleet's speed progressively increases.
-4. **Column Shooting**: Only the bottom-most alien in each active column is eligible to fire bullets downward.
